@@ -1,16 +1,17 @@
 import sqlite3
+from datetime import date
 
 def updateSqliteTable():
     try:
         sqliteConnection = sqlite3.connect('db.sqlite3')
         cursor = sqliteConnection.cursor()
-        # cursor.execute("SELECT * FROM info_attendance")
-        # rows = cursor.fetchall()
         print("Connected to SQLite")
-        # for row in rows:
-        #   print(row)
-        sql_update_query = """Update info_attendance set status = 1 WHERE student_id = 'IT2A01' AND date = '2025-01-06';"""
-        cursor.execute(sql_update_query)
+        today = date.today()
+        print(today)
+        student_id='IT2A01'
+        sql_update_query = """Update info_attendance set status = 0 WHERE student_id = ? AND date = ?"""
+        tuple=(student_id,today)
+        cursor.execute(sql_update_query,tuple)
         sqliteConnection.commit()
         print("Record Updated successfully ")
         cursor.close()
