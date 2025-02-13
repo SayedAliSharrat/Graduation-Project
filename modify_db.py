@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 
 def updateSqliteTable():
     try:
@@ -7,9 +8,11 @@ def updateSqliteTable():
         # cursor.execute("SELECT * FROM info_attendance")
         # rows = cursor.fetchall()
         print("Connected to SQLite")
+        today = date.today()
+        print("Today date is: ", today)
         # for row in rows:
         #   print(row)
-        sql_update_query = """Update info_attendance set status = 0 WHERE student_id = 'CS01' AND date = '2020-11-03';"""
+        sql_update_query = """Update info_attendance set status = 1 WHERE student_id = 'CS01' AND date = '2020-11-03';"""
         cursor.execute(sql_update_query)
         sqliteConnection.commit()
         print("Record Updated successfully ")
