@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from .models import Dept, Class, Student, Attendance, Course, Teacher, Assign, AttendanceTotal, time_slots, \
-    DAYS_OF_WEEK, AssignTime, AttendanceClass, StudentCourse, Marks, MarksClass
+    DAYS_OF_WEEK, AssignTime, AttendanceClass
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -187,14 +187,14 @@ def e_confirm(request, assign_id):
     return HttpResponseRedirect(reverse('t_clas', args=(ass.teacher_id, 1)))
 
 
-@login_required()
-def t_report(request, assign_id):
-    ass = get_object_or_404(Assign, id=assign_id)
-    sc_list = []
-    for stud in ass.class_id.student_set.all():
-        a = StudentCourse.objects.get(student=stud, course=ass.course)
-        sc_list.append(a)
-    return render(request, 'info/t_report.html', {'sc_list': sc_list})
+# @login_required()
+# def t_report(request, assign_id):
+#     ass = get_object_or_404(Assign, id=assign_id)
+#     sc_list = []
+#     for stud in ass.class_id.student_set.all():
+#          a = StudentCourse.objects.get(student=stud, course=ass.course)
+#         sc_list.append(a)
+#     return render(request, 'info/t_report.html', {'sc_list': sc_list})
 
 
 @login_required()
@@ -262,91 +262,91 @@ def free_teachers(request, asst_id):
 # student marks
 
 
-@login_required()
-def marks_list(request, stud_id):
-    stud = Student.objects.get(USN=stud_id, )
-    ass_list = Assign.objects.filter(class_id_id=stud.class_id)
-    sc_list = []
-    for ass in ass_list:
-        try:
-            sc = StudentCourse.objects.get(student=stud, course=ass.course)
-        except StudentCourse.DoesNotExist:
-            sc = StudentCourse(student=stud, course=ass.course)
-            sc.save()
-            sc.marks_set.create(type='I', name='Internal test 1')
-            sc.marks_set.create(type='I', name='Internal test 2')
-            sc.marks_set.create(type='I', name='Internal test 3')
-            sc.marks_set.create(type='E', name='Event 1')
-            sc.marks_set.create(type='E', name='Event 2')
-            sc.marks_set.create(type='S', name='Semester End Exam')
-        sc_list.append(sc)
+# @login_required()
+# def marks_list(request, stud_id):
+#     stud = Student.objects.get(USN=stud_id, )
+#     ass_list = Assign.objects.filter(class_id_id=stud.class_id)
+#     sc_list = []
+#     for ass in ass_list:
+#         try:
+#             sc = StudentCourse.objects.get(student=stud, course=ass.course)
+#         except StudentCourse.DoesNotExist:
+#             sc = StudentCourse(student=stud, course=ass.course)
+#             sc.save()
+#             sc.marks_set.create(type='I', name='Internal test 1')
+#             sc.marks_set.create(type='I', name='Internal test 2')
+#             sc.marks_set.create(type='I', name='Internal test 3')
+#             sc.marks_set.create(type='E', name='Event 1')
+#             sc.marks_set.create(type='E', name='Event 2')
+#             sc.marks_set.create(type='S', name='Semester End Exam')
+#         sc_list.append(sc)
 
-    return render(request, 'info/marks_list.html', {'sc_list': sc_list})
+#     return render(request, 'info/marks_list.html', {'sc_list': sc_list})
 
 
 # teacher marks
 
 
-@login_required()
-def t_marks_list(request, assign_id):
-    ass = get_object_or_404(Assign, id=assign_id)
-    m_list = MarksClass.objects.filter(assign=ass)
-    return render(request, 'info/t_marks_list.html', {'m_list': m_list})
+# @login_required()
+# def t_marks_list(request, assign_id):
+#     ass = get_object_or_404(Assign, id=assign_id)
+#     m_list = MarksClass.objects.filter(assign=ass)
+#     return render(request, 'info/t_marks_list.html', {'m_list': m_list})
 
 
-@login_required()
-def t_marks_entry(request, marks_c_id):
-    mc = get_object_or_404(MarksClass, id=marks_c_id)
-    ass = mc.assign
-    c = ass.class_id
-    context = {
-        'ass': ass,
-        'c': c,
-        'mc': mc,
-    }
-    return render(request, 'info/t_marks_entry.html', context)
+# @login_required()
+# def t_marks_entry(request, marks_c_id):
+#     mc = get_object_or_404(MarksClass, id=marks_c_id)
+#     ass = mc.assign
+#     c = ass.class_id
+#     context = {
+#         'ass': ass,
+#         'c': c,
+#         'mc': mc,
+#     }
+#     return render(request, 'info/t_marks_entry.html', context)
 
 
-@login_required()
-def marks_confirm(request, marks_c_id):
-    mc = get_object_or_404(MarksClass, id=marks_c_id)
-    ass = mc.assign
-    cr = ass.course
-    cl = ass.class_id
-    for s in cl.student_set.all():
-        mark = request.POST[s.USN]
-        sc = StudentCourse.objects.get(course=cr, student=s)
-        m = sc.marks_set.get(name=mc.name)
-        m.marks1 = mark
-        m.save()
-    mc.status = True
-    mc.save()
+# @login_required()
+# def marks_confirm(request, marks_c_id):
+#     mc = get_object_or_404(MarksClass, id=marks_c_id)
+#     ass = mc.assign
+#     cr = ass.course
+#     cl = ass.class_id
+#     for s in cl.student_set.all():
+#         mark = request.POST[s.USN]
+#         sc = StudentCourse.objects.get(course=cr, student=s)
+#         m = sc.marks_set.get(name=mc.name)
+#         m.marks1 = mark
+#         m.save()
+#     mc.status = True
+#     mc.save()
 
-    return HttpResponseRedirect(reverse('t_marks_list', args=(ass.id,)))
-
-
-@login_required()
-def edit_marks(request, marks_c_id):
-    mc = get_object_or_404(MarksClass, id=marks_c_id)
-    cr = mc.assign.course
-    stud_list = mc.assign.class_id.student_set.all()
-    m_list = []
-    for stud in stud_list:
-        sc = StudentCourse.objects.get(course=cr, student=stud)
-        m = sc.marks_set.get(name=mc.name)
-        m_list.append(m)
-    context = {
-        'mc': mc,
-        'm_list': m_list,
-    }
-    return render(request, 'info/edit_marks.html', context)
+#     return HttpResponseRedirect(reverse('t_marks_list', args=(ass.id,)))
 
 
-@login_required()
-def student_marks(request, assign_id):
-    ass = Assign.objects.get(id=assign_id)
-    sc_list = StudentCourse.objects.filter(student__in=ass.class_id.student_set.all(), course=ass.course)
-    return render(request, 'info/t_student_marks.html', {'sc_list': sc_list})
+# @login_required()
+# def edit_marks(request, marks_c_id):
+#     mc = get_object_or_404(MarksClass, id=marks_c_id)
+#     cr = mc.assign.course
+#     stud_list = mc.assign.class_id.student_set.all()
+#     m_list = []
+#     for stud in stud_list:
+#         sc = StudentCourse.objects.get(course=cr, student=stud)
+#         m = sc.marks_set.get(name=mc.name)
+#         m_list.append(m)
+#     context = {
+#         'mc': mc,
+#         'm_list': m_list,
+#     }
+#     return render(request, 'info/edit_marks.html', context)
+
+
+# @login_required()
+# def student_marks(request, assign_id):
+#     ass = Assign.objects.get(id=assign_id)
+#     sc_list = StudentCourse.objects.filter(student__in=ass.class_id.student_set.all(), course=ass.course)
+#     return render(request, 'info/t_student_marks.html', {'sc_list': sc_list})
 
 
 @login_required()

@@ -33,6 +33,7 @@ AUTH_USER_MODEL = 'info.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'info.apps.InfoConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,4 +138,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+}
+
+
+JAZZMIN_SETTINGS = {
+ "hide_models": ["info.Marks"],
+"hide_apps": ["info.Marks"],
 }

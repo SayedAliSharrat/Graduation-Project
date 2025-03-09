@@ -15,10 +15,10 @@ class AttendanceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MarksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Marks
-        fields = '__all__'
+# class MarksSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Marks
+#         fields = '__all__'
 
 
 class TimeTableSerializer(serializers.ModelSerializer):

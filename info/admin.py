@@ -6,7 +6,8 @@ from django.http import HttpResponseRedirect
 from django.urls import path
 
 from .models import Dept, Class, Student, Attendance, Course, Teacher, Assign, AssignTime, AttendanceClass
-from .models import StudentCourse, Marks, User, AttendanceRange
+from .models import User, AttendanceRange
+# from .models import StudentCourse, User, AttendanceRange
 
 # Register your models here.
 
@@ -68,13 +69,13 @@ class AssignAdmin(admin.ModelAdmin):
     raw_id_fields = ['class_id', 'course', 'teacher']
 
 
-class MarksInline(admin.TabularInline):
-    model = Marks
-    extra = 0
+# class MarksInline(admin.TabularInline):
+#     model = Marks
+#     extra = 0
 
 
 class StudentCourseAdmin(admin.ModelAdmin):
-    inlines = [MarksInline]
+    # inlines = [MarksInline]
     list_display = ('student', 'course',)
     search_fields = ('student__name', 'course__name', 'student__class_id__id', 'student__class_id__dept__name')
     ordering = ('student__class_id__dept__name', 'student__class_id__id', 'student__USN')
@@ -132,7 +133,7 @@ class AttendanceClassAdmin(admin.ModelAdmin):
         self.message_user(request, "Attendance Dates reset successfully!")
         return HttpResponseRedirect("../")
 
-
+# admin.site.unregister(Marks)
 admin.site.register(User, UserAdmin)
 admin.site.register(Dept, DeptAdmin)
 admin.site.register(Class, ClassAdmin)
@@ -140,5 +141,43 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Assign, AssignAdmin)
-admin.site.register(StudentCourse, StudentCourseAdmin)
+# admin.site.register(StudentCourse, StudentCourseAdmin)
 admin.site.register(AttendanceClass, AttendanceClassAdmin)
+
+
+
+# class CustomAdminSite(admin.AdminSite):
+#     def get_app_list(self, request):
+#         app_list = super().get_app_list(request)
+#         for app in app_list:
+#             if app["name"] == "Info":  # Check the app where "Marks" is listed
+#                 app["models"] = [model for model in app["models"] if model["object_name"] != "Marks"]
+#         return app_list
+
+# admin.site = CustomAdminSite()
+# admin.autodiscover()
+
+
+# class CustomAdmin(admin.AdminSite):
+#     class Media:
+#         css = {"all": ("admin/css/hide_marks.css",)}
+
+# admin.site = CustomAdmin()
+
+
+
+
+
+
+# try:
+#     admin.site.unregister(Marks)  # Unregister if it was registered
+# except admin.sites.NotRegistered:
+#     pass 
+
+
+
+# class MarksAdmin(admin.ModelAdmin):
+#     def has_module_permission(self, request):
+#         return False  # This hides it from the menu
+
+# admin.site.register(Marks, MarksAdmin)

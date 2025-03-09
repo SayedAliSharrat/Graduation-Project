@@ -202,57 +202,58 @@ class AttendanceTotal(models.Model):
         return cta
 
 
-class StudentCourse(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+# class StudentCourse(models.Model):
+#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+#     course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = (('student', 'course'),)
-        verbose_name_plural = 'Marks'
+#     class Meta:
+#         unique_together = (('student', 'course'),)
+#         verbose_name_plural = 'Marks'
 
-    def __str__(self):
-        sname = Student.objects.get(name=self.student)
-        cname = Course.objects.get(name=self.course)
-        return '%s : %s' % (sname.name, cname.shortname)
+#     def __str__(self):
+#         sname = Student.objects.get(name=self.student)
+#         cname = Course.objects.get(name=self.course)
+#         return '%s : %s' % (sname.name, cname.shortname)
 
-    def get_cie(self):
-        marks_list = self.marks_set.all()
-        m = []
-        for mk in marks_list:
-            m.append(mk.marks1)
-        cie = math.ceil(sum(m[:5]) / 2)
-        return cie
+#     def get_cie(self):
+#         marks_list = self.marks_set.all()
+#         m = []
+#         for mk in marks_list:
+#             m.append(mk.marks1)
+#         cie = math.ceil(sum(m[:5]) / 2)
+        # return cie
 
     def get_attendance(self):
         a = AttendanceTotal.objects.get(student=self.student, course=self.course)
         return a.attendance
 
 
-class Marks(models.Model):
-    studentcourse = models.ForeignKey(StudentCourse, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, choices=test_name, default='Internal test 1')
-    marks1 = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
+# class Marks(models.Model)
+# :
+#     studentcourse = models.ForeignKey(StudentCourse, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=50, choices=test_name, default='Internal test 1')
+#     marks1 = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
 
-    class Meta:
-        unique_together = (('studentcourse', 'name'),)
+#     class Meta:
+#         unique_together = (('studentcourse', 'name'),)
 
-    @property
-    def total_marks(self):
-        if self.name == 'Semester End Exam':
-            return 100
-        return 20
+#     @property
+#     def total_marks(self):
+#         if self.name == 'Semester End Exam':
+#             return 100
+#         return 20
 
 
-class MarksClass(models.Model):
-    assign = models.ForeignKey(Assign, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50, choices=test_name, default='Internal test 1')
-    status = models.BooleanField(default='False')
+# class MarksClass(models.Model):
+#     assign = models.ForeignKey(Assign, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=50, choices=test_name, default='Internal test 1')
+#     status = models.BooleanField(default='False')
 
-    class Meta:
-        unique_together = (('assign', 'name'),)
+#     class Meta:
+#         unique_together = (('assign', 'name'),)
 
-    @property
-    def total_marks(self):
+#     @property
+#     def total_marks(self):
         if self.name == 'Semester End Exam':
             return 100
         return 20
@@ -294,56 +295,56 @@ def create_attendance(sender, instance, **kwargs):
                     a.save()
 
 
-def create_marks(sender, instance, **kwargs):
-    if kwargs['created']:
-        if hasattr(instance, 'name'):
-            ass_list = instance.class_id.assign_set.all()
-            for ass in ass_list:
-                try:
-                    StudentCourse.objects.get(student=instance, course=ass.course)
-                except StudentCourse.DoesNotExist:
-                    sc = StudentCourse(student=instance, course=ass.course)
-                    sc.save()
-                    sc.marks_set.create(name='Internal test 1')
-                    sc.marks_set.create(name='Internal test 2')
-                    sc.marks_set.create(name='Internal test 3')
-                    sc.marks_set.create(name='Event 1')
-                    sc.marks_set.create(name='Event 2')
-                    sc.marks_set.create(name='Semester End Exam')
-        elif hasattr(instance, 'course'):
-            stud_list = instance.class_id.student_set.all()
-            cr = instance.course
-            for s in stud_list:
-                try:
-                    StudentCourse.objects.get(student=s, course=cr)
-                except StudentCourse.DoesNotExist:
-                    sc = StudentCourse(student=s, course=cr)
-                    sc.save()
-                    sc.marks_set.create(name='Internal test 1')
-                    sc.marks_set.create(name='Internal test 2')
-                    sc.marks_set.create(name='Internal test 3')
-                    sc.marks_set.create(name='Event 1')
-                    sc.marks_set.create(name='Event 2')
-                    sc.marks_set.create(name='Semester End Exam')
+# def create_marks(sender, instance, **kwargs):
+    # if kwargs['created']:
+    #     if hasattr(instance, 'name'):
+    #         ass_list = instance.class_id.assign_set.all()
+    #         for ass in ass_list:
+    #             try:
+    #                 StudentCourse.objects.get(student=instance, course=ass.course)
+    #             except StudentCourse.DoesNotExist:
+    #                 sc = StudentCourse(student=instance, course=ass.course)
+    #                 sc.save()
+    #                 sc.marks_set.create(name='Internal test 1')
+    #                 sc.marks_set.create(name='Internal test 2')
+    #                 sc.marks_set.create(name='Internal test 3')
+    #                 sc.marks_set.create(name='Event 1')
+    #                 sc.marks_set.create(name='Event 2')
+    #                 sc.marks_set.create(name='Semester End Exam')
+    #     elif hasattr(instance, 'course'):
+    #         stud_list = instance.class_id.student_set.all()
+    #         cr = instance.course
+    #         for s in stud_list:
+    #             try:
+    #                 StudentCourse.objects.get(student=s, course=cr)
+    #             except StudentCourse.DoesNotExist:
+    #                 sc = StudentCourse(student=s, course=cr)
+    #                 sc.save()
+    #                 sc.marks_set.create(name='Internal test 1')
+    #                 sc.marks_set.create(name='Internal test 2')
+    #                 sc.marks_set.create(name='Internal test 3')
+    #                 sc.marks_set.create(name='Event 1')
+    #                 sc.marks_set.create(name='Event 2')
+    #                 sc.marks_set.create(name='Semester End Exam')
 
 
-def create_marks_class(sender, instance, **kwargs):
-    if kwargs['created']:
-        for name in test_name:
-            try:
-                MarksClass.objects.get(assign=instance, name=name[0])
-            except MarksClass.DoesNotExist:
-                m = MarksClass(assign=instance, name=name[0])
-                m.save()
+# def create_marks_class(sender, instance, **kwargs):
+#     if kwargs['created']:
+#         for name in test_name:
+#             try:
+#                 MarksClass.objects.get(assign=instance, name=name[0])
+#             except MarksClass.DoesNotExist:
+#                 m = MarksClass(assign=instance, name=name[0])
+#                 m.save()
 
 
-def delete_marks(sender, instance, **kwargs):
-    stud_list = instance.class_id.student_set.all()
-    StudentCourse.objects.filter(course=instance.course, student__in=stud_list).delete()
+# def delete_marks(sender, instance, **kwargs):
+#     stud_list = instance.class_id.student_set.all()
+#     StudentCourse.objects.filter(course=instance.course, student__in=stud_list).delete()
 
 
-post_save.connect(create_marks, sender=Student)
-post_save.connect(create_marks, sender=Assign)
-post_save.connect(create_marks_class, sender=Assign)
+# post_save.connect(create_marks, sender=Student)
+# post_save.connect(create_marks, sender=Assign)
+# post_save.connect(create_marks_class, sender=Assign)
 post_save.connect(create_attendance, sender=AssignTime)
-post_delete.connect(delete_marks, sender=Assign)
+# post_delete.connect(delete_marks, sender=Assign)
