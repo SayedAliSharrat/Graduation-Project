@@ -187,14 +187,14 @@ def e_confirm(request, assign_id):
     return HttpResponseRedirect(reverse('t_clas', args=(ass.teacher_id, 1)))
 
 
-# @login_required()
-# def t_report(request, assign_id):
-#     ass = get_object_or_404(Assign, id=assign_id)
-#     sc_list = []
-#     for stud in ass.class_id.student_set.all():
-#          a = StudentCourse.objects.get(student=stud, course=ass.course)
-#         sc_list.append(a)
-#     return render(request, 'info/t_report.html', {'sc_list': sc_list})
+@login_required()
+def t_report(request, assign_id):
+    ass = get_object_or_404(Assign, id=assign_id)
+    sc_list = []
+    # for stud in ass.class_id.student_set.all():
+    #      a = StudentCourse.objects.get(student=stud, course=ass.course)
+    #     sc_list.append(a)
+    return render(request, 'info/t_report.html', {'sc_list': sc_list})
 
 
 @login_required()
