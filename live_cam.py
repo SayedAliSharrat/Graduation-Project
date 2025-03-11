@@ -23,9 +23,13 @@ def load_known_faces():
             image_path = os.path.join(FOLDER_PATH, filename)
             face_image = face_recognition.load_image_file(image_path)
             face_encodings = face_recognition.face_encodings(face_image)
+            
+            # Separate file name and extension
+            file_name, file_extension = os.path.splitext(filename)
+            
             if face_encodings:
                 KNOWN_FACES.append(face_encodings[0])
-                KNOWN_IDS.append(filename)
+                KNOWN_IDS.append(file_name)  # Store only the file name without extension
             else:
                 print(f"Warning: No face found in {filename}")
 
@@ -65,10 +69,13 @@ def update_sqlite_table(detected_names):
         print(f"Today's date: {today}")
 
         for student_id in detected_names:
-            sql_update_query = """UPDATE info_attendance SET status = 0 WHERE student_id = ? AND date = ?"""
+            sql_update_query = """UPDATE info_attendance SET status = 1 WHERE student_id = ? AND date = ?"""
             cursor.execute(sql_update_query, (student_id, today))
+            if cursor.rowcount > 0:
+                print(f"Record updated successfully for student ID: {student_id}")
+            else:
+                print(f"No record found for student ID: {student_id} on date: {today}")
             sqlite_connection.commit()
-            print(f"Record updated successfully for student ID: {student_id}")
 
     except sqlite3.Error as error:
         print("Failed to update SQLite table:", error)
