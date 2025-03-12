@@ -95,7 +95,7 @@ class Student(models.Model):
     USN = models.CharField(primary_key='True', max_length=100)
     name = models.CharField(max_length=200)
     sex = models.CharField(max_length=50, choices=sex_choice, default='Male')
-    DOB = models.DateField(default='1998-01-01')
+    DOB = models.DateField(default='2003-01-01')
 
     def __str__(self):
         return self.name
@@ -148,7 +148,7 @@ class Attendance(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     attendanceclass = models.ForeignKey(AttendanceClass, on_delete=models.CASCADE, default=1)
-    date = models.DateField(default='2018-10-23')
+    date = models.DateField(default='2025-03-01')
     status = models.BooleanField(default='True')
 
     def __str__(self):
