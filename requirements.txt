@@ -36,3 +36,4 @@ threadpoolctl==3.5.0
 tzdata==2024.2
 urllib3==2.3.0
 wheel==0.45.1
+django-jazzmin==3.0.1
