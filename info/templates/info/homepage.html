@@ -49,12 +49,10 @@
     <div class="container">
 
       <!-- Jumbotron Header -->
-      <header class="jumbotron my-4">
-        <h1 class="display-3 text-capitalize">Welcome {{ request.user.student.name }}</h1>
-{#        <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>#}
-{#        <a href="#" class="btn btn-primary btn-lg">Call to action!</a>#}
-      </header>
-
+      <header class="my-4">
+        <div class="container text-black p-4"  style=" margin-bottom: 20px; border-radius: 30px; height: 170px; width: 80%; background-color: #e1eeff; font-family: 'Questrial'; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);">
+        <h1 class="display-3 text-capitalize text-center">Welcome {{ request.user.student.name }}</h1>
+      </div>
       <!-- Page Features -->
       <div class="row text-center justify-content-center">
 
@@ -69,7 +67,8 @@
                   also displayed as list of classes that were conducted.</p>
             </div>
             <div class="card-footer">
-                <a class="btn btn-primary" role="button" href="{% url 'attendance' request.user.student.USN %}"> View Attendance</a>
+                <a class="btn text-white" style="background-color: #464a70; transition: 0.3s;"onmouseover="this.style.backgroundColor='#858bcc'"
+                onmouseout="this.style.backgroundColor='#464a70'" role="button" href="{% url 'attendance' request.user.student.USN %}"> View Attendance</a>
             </div>
           </div>
         </div>
@@ -86,7 +85,8 @@
                   student and the time and day at which they are conducted.</p>
             </div>
             <div class="card-footer">
-                <a class="btn btn-primary" role="button" href="{% url 'timetable' request.user.student.class_id_id %}">View TimeTable</a>
+                <a class="btn text-white" style="background-color: #464a70;  transition: 0.3s;"onmouseover="this.style.backgroundColor='#858bcc'"
+                onmouseout="this.style.backgroundColor='#464a70'" href="{% url 'timetable' request.user.student.class_id_id %}">View TimeTable</a>
             </div>
           </div>
         </div>
