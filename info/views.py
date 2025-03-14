@@ -187,15 +187,39 @@ def e_confirm(request, assign_id):
     return HttpResponseRedirect(reverse('t_clas', args=(ass.teacher_id, 1)))
 
 
+# @login_required()
+# def t_report(request, assign_id):
+#     ass = get_object_or_404(Assign, id=assign_id)
+#     sc_list = []
+#     # for stud in ass.class_id.student_set.all():
+#     #      a = StudentCourse.objects.get(student=stud, course=ass.course)
+#     #     sc_list.append(a)
+#     return render(request, 'info/t_report.html', {'sc_list': sc_list})
 @login_required()
-def t_report(request, assign_id):
-    ass = get_object_or_404(Assign, id=assign_id)
-    sc_list = []
-    # for stud in ass.class_id.student_set.all():
-    #      a = StudentCourse.objects.get(student=stud, course=ass.course)
-    #     sc_list.append(a)
-    return render(request, 'info/t_report.html', {'sc_list': sc_list})
+def attendance_chart(request, user_id):
+    user_id = user_id.strip().upper()
+    print(f"🔹 User ID received: {user_id}")  # طباعة ID الطالب في runserver للتأكد
 
+    # البحث عن الطالب
+    student = Student.objects.filter(USN__iexact="IT2A01").first()
+    
+    if not student:
+        return render(request, "error.html", {"message": f"⚠️ الطالب غير موجود: {user_id}"})
+
+    # جلب بيانات الحضور
+    total_days = Attendance.objects.filter(student=student).count()
+    absent_days = Attendance.objects.filter(student=student, status=False).count()
+    present_days = total_days - absent_days
+
+    print(f"✅ {student.name} - حضور: {present_days}, غياب: {absent_days}")  # طباعة البيانات في runserver
+
+    context = {
+        "student_name": student.name,
+        "present_days": present_days,
+        "absent_days": absent_days,
+    }
+
+    return render(request, "info/attendance_chart.html", context)
 
 @login_required()
 def timetable(request, class_id):

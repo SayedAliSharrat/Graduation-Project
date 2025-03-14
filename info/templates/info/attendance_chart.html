@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نسبة الغياب بالأعمدة</title>
+    <script src="{% static 'info/bootstrap/js/demo/chart.min.js'%}"></script>
+</head>
+<body>
+    <h1 style="text-align:center">Chart of Attendence</h1>
+
+<div style="display:flex;justify-content:center; align-items:center; height:600px">
+
+    <canvas id="attendanceChart" style="width: 600px; height: 500px;" > ></canvas>
+
+    <script>        
+        var ctx = document.getElementById('attendanceChart').getContext('2d');
+        var attendanceChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Present', 'Absent'],
+                datasets: [{
+                    label: 'Number of Dayes',
+                    data: [{% if present_days is not None %}{{ present_days }}{% else %}0{% endif %}, 
+                    {% if absent_days is not None %}{{ absent_days }}{% else %}0{% endif %}],
+                    backgroundColor: ['#4CAF50', '#FF5733'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,
+                // scales: {
+                //     y: {
+                //         beginAtZero: true
+                //     }
+                // }
+                maintainAspectRatio: false
+            }
+        });
+
+    </script>
+</div>
+
+</body>
+</html>
