@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
-from .models import Dept, Class, Student, Attendance, Course, Teacher, Assign, AttendanceTotal, time_slots, \
+from .models import Dept, Class, Student, Attendance, Course, StudentCourse, Teacher, Assign, AttendanceTotal, time_slots, \
     DAYS_OF_WEEK, AssignTime, AttendanceClass
 from django.urls import reverse
 from django.utils import timezone
@@ -187,18 +187,20 @@ def e_confirm(request, assign_id):
     return HttpResponseRedirect(reverse('t_clas', args=(ass.teacher_id, 1)))
 
 
-# @login_required()
-# def t_report(request, assign_id):
-#     ass = get_object_or_404(Assign, id=assign_id)
-#     sc_list = []
-#     # for stud in ass.class_id.student_set.all():
-#     #      a = StudentCourse.objects.get(student=stud, course=ass.course)
-#     #     sc_list.append(a)
-#     return render(request, 'info/t_report.html', {'sc_list': sc_list})
 @login_required()
+def t_report(request, assign_id):
+    ass = get_object_or_404(Assign, id=assign_id)
+    sc_list = []
+    for stud in ass.class_id.student_set.all():
+        a = StudentCourse.objects.get(student=stud, course=ass.course)
+        sc_list.append(a)
+    return render(request, 'info/t_report.html', {'sc_list': sc_list})
+
+
+""" @login_required()
 def attendance_chart(request, user_id):
-    user_id = user_id.strip().upper()
     print(f"🔹 User ID received: {user_id}")  # طباعة ID الطالب في runserver للتأكد
+    user_id = user_id.strip().upper()
 
     # البحث عن الطالب
     student = Student.objects.filter(USN__iexact="IT2A01").first()
@@ -220,7 +222,7 @@ def attendance_chart(request, user_id):
     }
 
     return render(request, "info/attendance_chart.html", context)
-
+ """
 @login_required()
 def timetable(request, class_id):
     asst = AssignTime.objects.filter(assign__class_id=class_id)

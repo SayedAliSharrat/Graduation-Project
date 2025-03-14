@@ -202,27 +202,17 @@ class AttendanceTotal(models.Model):
         return cta
 
 
-# class StudentCourse(models.Model):
-#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-#     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-
-#     class Meta:
-#         unique_together = (('student', 'course'),)
-#         verbose_name_plural = 'Marks'
-
-#     def __str__(self):
-#         sname = Student.objects.get(name=self.student)
-#         cname = Course.objects.get(name=self.course)
-#         return '%s : %s' % (sname.name, cname.shortname)
-
-#     def get_cie(self):
-#         marks_list = self.marks_set.all()
-#         m = []
-#         for mk in marks_list:
-#             m.append(mk.marks1)
-#         cie = math.ceil(sum(m[:5]) / 2)
-        # return cie
-
+class StudentCourse(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    class Meta:
+        unique_together = (('student', 'course'),)
+        
+    def __str__(self):
+        sname = Student.objects.get(name=self.student)
+        cname = Course.objects.get(name=self.course)
+        return '%s : %s' % (sname.name, cname.shortname)
+    
     def get_attendance(self):
         a = AttendanceTotal.objects.get(student=self.student, course=self.course)
         return a.attendance
