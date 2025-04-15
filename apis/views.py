@@ -79,7 +79,7 @@ class AttendanceView(APIView):
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
-
+'''
 class MarksView(APIView):
     """
     This view is used to return user's marks 
@@ -112,7 +112,7 @@ class MarksView(APIView):
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
-
+'''
 class TimetableView(APIView):
     """
     This view is used to check user's class timetable

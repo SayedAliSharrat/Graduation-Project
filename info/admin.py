@@ -7,7 +7,7 @@ from django.urls import path
 
 from .models import Dept, Class, Student, Attendance, Course, Teacher, Assign, AssignTime, AttendanceClass
 from .models import User, AttendanceRange
-# from .models import StudentCourse, User, AttendanceRange
+from .models import StudentCourse, User, AttendanceRange
 
 # Register your models here.
 
@@ -141,7 +141,7 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Assign, AssignAdmin)
-# admin.site.register(StudentCourse, StudentCourseAdmin)
+admin.site.register(StudentCourse, StudentCourseAdmin)
 admin.site.register(AttendanceClass, AttendanceClassAdmin)
 
 
