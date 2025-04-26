@@ -43,8 +43,10 @@
     <div class="container">
 
       <!-- Jumbotron Header -->
-      <header class="jumbotron my-4">
-        <h1 class="display-3 text-capitalize">Welcome {{ request.user }}</h1>
+      <header class="my-4">
+        <div class="container text-black p-4"  style=" margin-bottom: 20px; border-radius: 30px; height: 170px; width: 80%; background-color: #e1eeff; font-family: 'Questrial'; box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);">
+        <h1 class="display-3 text-capitalize text-center">Welcome {{ request.user }}</h1>
+      </div>
       </header>
 
       <!-- Page Features -->
@@ -53,7 +55,7 @@
         <div class="col-lg-3 col-md-6 mb-4">
           <div class="card"> 
                 <a class="px-2 py-3" href="{% url 'add_teacher' %}">
-                    <img class="card-img-top" src="{% static 'info/images/teacher.png' %}" alt="">
+                    <img class="card-img-top" src="{% static 'info/images/teacher2.jpg' %}" alt="">
                 </a>
                 <div class="card-body">
                     <h4 class="card-title">Add Teacher</h4>
@@ -65,7 +67,7 @@
         <div class="col-lg-3 col-md-6 mb-4">
           <div class="card">
             <a class="px-2 py-3" href="{% url 'add_student' %}">
-                <img class="card-img-top" src="{% static 'info/images/student.png' %}" alt="">
+                <img class="card-img-top" src="{% static 'info/images/student2.jpg' %}" alt="">
             </a>
             <div class="card-body">
                 <h4 class="card-title">Add Student</h4>
