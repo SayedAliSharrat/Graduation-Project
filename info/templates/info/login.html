@@ -21,13 +21,32 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static '/info/bootstrap/css/sb-admin.css' %}" rel="stylesheet">
-
+    <style>
+      /* Center the card vertically and horizontally */
+      .center-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .card-login {
+        width: 450px ; /* Increase card width */
+        max-width: 100%;
+        background-color: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      }
+    </style>
   </head>
 
-  <body class="bg-dark">
-
-    <div class="container">
-      <div class="card card-login mx-auto mt-5">
+  <body class="bg-login">
+    <style>
+      .bg-login {
+      background: url("{% static 'info/images/bg-login3.jpg' %}") no-repeat center center fixed;
+      background-size: cover;
+                }
+    </style>
+    <div class="container center-container">
+      <div class="card card-login mx-auto ">
         <div class="card-header">Login</div>
         <div class="card-body">
             <form method="post">
