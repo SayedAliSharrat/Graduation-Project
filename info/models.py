@@ -196,7 +196,7 @@ class AttendanceTotal(models.Model):
         cr = Course.objects.get(name=self.course)
         total_class = Attendance.objects.filter(course=cr, student=stud).count()
         att_class = Attendance.objects.filter(course=cr, student=stud, status='True').count()
-        cta = math.ceil((0.75 * total_class - att_class) / 0.25)
+        cta = math.ceil(0.75*total_class - att_class)
         if cta < 0:
             return 0
         return cta
